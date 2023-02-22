@@ -1,0 +1,17 @@
+version: "3.1"
+
+services:
+  click_dealer_redis:
+    image: redis
+    command: redis-server --requirepass 123456
+    ports:
+      - 6379:6379
+  click_dealer_mongo_db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mrscx
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: click_dealer
+    ports:
+      - "27017:27017"
