@@ -2,13 +2,12 @@
 import { Vehicle } from "../models/Vehicle";
 import { logger } from "../loaders/logger";
 import { IVehicle } from "../utils/interfaces";
-import mongoose from "mongoose";
 
-export const CreateNewVehicle = async (data: IVehicle) => {
+export const CreateNewVehicle = async (u_id: string, data: IVehicle) => {
 
 	try {
 
-		const vehicle = new Vehicle(data);
+		const vehicle = new Vehicle({ ...data, created_by: u_id });
 		await vehicle.save();
 
 		return { status: 200, vehicle };
@@ -33,40 +32,38 @@ export const PatchVehicle = async (id: string | undefined, data: IVehicle) => {
 	}
 }
 
-export const GetAllVehicles = async (lastVehicleId: string | undefined) => {
+export const GetAllVehicles = async (u_id: string, searchQuery: string) => {
 	try {
 
-		if (lastVehicleId) {
-			const isValidId = mongoose.Types.ObjectId.isValid(lastVehicleId);
-
-			if (!isValidId) {
-				return { status: 400, message: "Invalid ID" };
-			}
+		if (!u_id) {
+			return { status: 400, message: "Invalid ID" };
 		}
 
-		const MAX_LIMIT = 15;
+		let dbSearchQuery = {};
 
-		let vehicles: IVehicle[] = [];
-
-		const count = await Vehicle.countDocuments();
-
-		if (!lastVehicleId) {
-			vehicles = await Vehicle.find()
-				.sort({ _id: 1 })
-				.limit(MAX_LIMIT);
-		} else {
-			vehicles = await Vehicle.find({ _id: { $gt: lastVehicleId } })
-				.sort({ _id: 1 })
-				.limit(MAX_LIMIT);
+		if (searchQuery) {
+			dbSearchQuery = {
+				$or: [
+					{ make: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+					{ model: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+					{ year: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+					{ color: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+					{ description: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+					{ registration: { $regex: `.*${searchQuery}.*`, $options: "i" } },
+				]
+			};
 		}
 
-		return { 
+		const vehicles = await Vehicle
+			.find({
+				...dbSearchQuery,
+				created_by: u_id,
+			})
+			.sort({ created_at: -1 });
+
+		return {
 			status: 200,
-			data: {
-				count,
-				vehicles,
-				hasMore: vehicles.length === MAX_LIMIT
-			}
+			vehicles
 		};
 
 	} catch (err) {
@@ -80,29 +77,6 @@ export const DeleteVehicle = async (id: string) => {
 
 		await Vehicle.deleteOne({ _id: id });
 		return { status: 200 };
-
-	} catch (err) {
-		logger.error(err);
-		return { status: 500, message: "Internal Server Error" };
-	}
-}
-
-export const GetVehicleById = async (id: string) => {
-	try {
-
-		const isValidId = mongoose.Types.ObjectId.isValid(id);
-
-		if (!isValidId) {
-			return { status: 400, msg: "Invalid ID" };
-		}
-
-		const vehicle = await Vehicle.findById(id);
-
-		if (!vehicle) {
-			return { status: 404 };
-		}
-
-		return { status: 200, vehicle };
 
 	} catch (err) {
 		logger.error(err);

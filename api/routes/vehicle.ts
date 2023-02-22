@@ -1,5 +1,6 @@
 import { Router, IRouter } from "express";
 
+import { isAuth } from "../middlewares/auth";
 import { createRateLimiter } from "../../utils/rate-limiter";
 import { rateLimitMiddleware } from "../middlewares/rate-limiter";
 
@@ -7,8 +8,7 @@ import {
 	postNewVehicle, 
 	patchVehicle, 
 	getAllVehicles, 
-	deleteVehicle, 
-	getVehicleById 
+	deleteVehicle
 } from "../controllers/vehicle";
 
 import { sanitizeForm, createVehicleValidator } from "../middlewares/validator";
@@ -42,10 +42,5 @@ export const vehicleRoutes = (app: IRouter) => {
 		getAllVehicles
 	);
 
-	router.get(
-		"/:id", 
-		getVehicleById
-	);
-
-    app.use("/vehicle", router);
+    app.use("/vehicle", isAuth, router);
 }

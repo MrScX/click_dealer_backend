@@ -83,15 +83,17 @@ export const SignIn = async (body: ISignIn) => {
 			id: user.id,
 			name: user.name,
 			email: user.email,
-			status: user.status
+			status: user.status,
 		};
-
+		
 		user.last_login = new Date();
 		await user.save();
+		
+		const token = generateJWT(payload, "30d");
 
 		return {
 			status: 200,
-			data: payload
+			user: { ...payload, token }
 		};
 		
 	} catch (err) {

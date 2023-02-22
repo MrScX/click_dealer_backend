@@ -12,7 +12,7 @@ export interface IExpressRequest extends Request {
 };
 
 export interface IUser {
-	id?: string;
+	id: string;
 	name: string;
 	email: string;
 	password: string;
@@ -22,15 +22,17 @@ export interface IUser {
 };
 
 export interface IVehicle {
-	id?: string;
+	id: string;
 	make: string;
 	model: string;
 	year: string;
 	color: string;
 	price: number;
+	description: string;
+	img_url: string;
 	registration?: string;
 	registration_date?: Date;
-	status?: number;
+	status: number;
 	created_by: string;
 	created_at?: Date;
 };

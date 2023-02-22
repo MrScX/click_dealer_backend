@@ -8,6 +8,8 @@ const VehicleSchema = new mongoose.Schema<IVehicle>({
 	year: String,
 	color: String,
 	price: Number,
+	description: String,
+	img_url: String,
 	registration: String,
 	registration_date: Date,
 	status: { type: Number, default: vehicleStatus.AVAILABLE },

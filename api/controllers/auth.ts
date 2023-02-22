@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { Request, Response } from "express";
 import { IExpressRequest, IUser } from "../../utils/interfaces";
 
@@ -6,6 +7,7 @@ import { Authenticate, SignUp, SignIn } from "../../services/AuthService";
 export const postSignUp = async (req: Request, res: Response) => {
 	
 	const result = await SignUp({
+		id: uuid(),
 		name: req.body.name,
 		email: req.body.email,
 		password: req.body.password

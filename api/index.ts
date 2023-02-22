@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { authRoutes } from "./routes/auth";
+import { uploadRoutes } from "./routes/upload";
 import { vehicleRoutes } from "./routes/vehicle";
 
 export const loadRoutes = () => {
@@ -9,6 +10,7 @@ export const loadRoutes = () => {
 
     authRoutes(router);
     vehicleRoutes(router);
+	uploadRoutes(router);
 
     return router;
 }

@@ -16,3 +16,7 @@ export const isArrayAndHasContent = (arr: []) => {
 export const getOffsetFromPage = (page: number, limit = 25) => {
 	return (page - 1) * limit;
 }
+
+export const makeS3KeyForUser = (u_id: string, name: string) => {
+	return `${name.split(".").join("").split(" ").join("-")}-${u_id}`;
+}
