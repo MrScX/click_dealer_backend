@@ -27,4 +27,15 @@ AWS_IAM_SECRET = secret
 To run locally, run `npm run dev` in your command line and `npm run build` to build the project.
 
 ## API Spec:
+```
+GET /auth/authenticate
+POST /auth/register
+POST /auth/login
 
+GET /upload/s3-signed-url
+
+POST /vehicle/new
+PATCH /vehicle/:id
+DELETE /vehicle/:id
+GET /vehicle/all
+```
