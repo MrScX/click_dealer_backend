@@ -24,3 +24,7 @@ AWS_IAM_USER = iam_user
 AWS_IAM_ACCESS = access
 AWS_IAM_SECRET = secret
 ```
+To run locally, run `npm run dev` in your command line and `npm run build` to build the project.
+
+API Spec:
+
