@@ -12,11 +12,7 @@ import { validateAuth } from "../api/middlewares/auth";
 
 export const expressLoader = async (app: Express) => {
 
-	app.use(cors({
-		optionsSuccessStatus: 200,
-		credentials: true
-	}));
-
+	app.use(cors());
 	app.use(helmet());
 	app.use(morgan("combined", { stream }));
 	app.use(cookieParser());
