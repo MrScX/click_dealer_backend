@@ -8,22 +8,11 @@ import morgan from "morgan";
 import { stream } from "./logger";
 import { loadRoutes } from "../api";
 
-import { isDevelopment } from "../utils/utils";
-
 import { validateAuth } from "../api/middlewares/auth";
 
 export const expressLoader = async (app: Express) => {
 
-	const whitelist = ["http://localhost:3000"];
-
 	app.use(cors({
-		origin: (origin, callback) => {
-			if (isDevelopment() || whitelist.indexOf(origin as string) !== -1) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
 		optionsSuccessStatus: 200,
 		credentials: true
 	}));
