@@ -1,10 +1,10 @@
 # Click Dealer Backend API
 
-Dependency:
+## Dependency:
 This service depends on `Redis` and `MongoDB`. This repository contains a `docker-compose.yml` file to install those locally to get started.
 If you have docker installed, run `docker-compose up -d` this will bring up `Redis` and `MongoDB` running.
 
-Example .env
+## Example .env
 ```
 PORT = 6060
 NODE_ENV = development
@@ -26,5 +26,5 @@ AWS_IAM_SECRET = secret
 ```
 To run locally, run `npm run dev` in your command line and `npm run build` to build the project.
 
-API Spec:
+## API Spec:
 
